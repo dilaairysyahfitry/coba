@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun, Spesial! ✨</title>
+    <style>
+        /* --- RESET & BASE STYLE --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        /* --- CONTAINER UTAMA --- */
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* --- ELEMEN SURAT INTERAKTIF (THE MAGIC) --- */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+            margin: 30px auto;
+            width: 250px;
+            height: 180px;
+            background-color: #ffb3c6;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .envelope-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 125px solid transparent;
+            border-right: 125px solid transparent;
+            border-top: 100px solid #ff85a1;
+            transform-origin: top;
+            transition: transform 0.5s ease 0.3s;
+            z-index: 5;
+        }
+
+        /* Efek Buka Surat saat di-klik */
+        .envelope-wrapper.open::before {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            right: 10px;
+            height: 80%;
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px;
+            transition: transform 0.5s ease;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #ff477e;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+        }
+
+        .envelope-wrapper.open .letter {
+            transform: translateY(-80px);
+        }
+
+        /* --- KONTEN UTAMA (MUNCUL SETELAH SURAT DIBUKA) --- */
+        .main-content {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s ease 0.5s;
+            display: none;
+        }
+
+        .main-content.show {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        h1 {
+            color: #ff477e;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px rgba(255,255,255,0.5);
+            animation: bounce 2s infinite;
+        }
+
+        p.wishes {
+            font-size: 1.1rem;
+            color: #4a4a4a;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        /* --- MINI GALLERY --- */
+        .gallery {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-frame {
+            width: 130px;
+            height: 160px;
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transform: rotate(-5deg);
+            transition: transform 0.3s;
+        }
+
+        .photo-frame:nth-child(2) {
+            transform: rotate(5deg);
+        }
+
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.1);
+            z-index: 20;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .photo-frame span {
+            font-size: 0.8rem;
+            color: #777;
+            display: block;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* --- TOMBOL MUSIK --- */
+        .music-btn {
+            background-color: #ff477e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(255, 71, 126, 0.3);
+            transition: background 0.3s;
+        }
+
+        .music-btn:hover {
+            background-color: #ff1a5e;
+        }
+
+        /* --- ANIMASI --- */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: absolute;
+            color: #ff7096;
+            font-size: 20px;
+            animation: float Up 4s linear infinite;
+            opacity: 0;
+            bottom: -10%;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        
+        <div id="envelope" class="envelope-wrapper" onclick="openLetter()">
+            <div class="letter">Klik Aku! ❤️</div>
+        </div>
+
+        <div id="mainContent" class="main-content">
+            <h1>Selamat Ulang Tahun! 🎉</h1>
+            <p style="font-size: 1.3rem; color: #ff477e; font-weight: bold; margin-bottom: 15px;">
+                Untuk Seseorang yang Paling Spesial ✨
+            </p>
+            
+            <p class="wishes">
+                "Hari ini bukan cuma tentang bertambahnya usiamu, tapi tentang merayakan betapa beruntungnya dunia ini (dan aku!) karena kehadiranmu. Terima kasih sudah menjadi manusia yang luar biasa. Semoga tahun ini membawa sejuta kebahagiaan, tawa, dan mimpi-mimpi yang jadi kenyataan. Happy Birthday!"
+            </p>
+
+            <div class="gallery">
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400" alt="Foto 1">
+                    <span>Momen Manis ✨</span>
+                </div>
+                <div class="photo-frame">
+                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400" alt="Foto 2">
+                    <span>Tawa Kita 🤍</span>
+                </div>
+            </div>
+
+            <button class="music-btn" onclick="toggleMusic()">🎵 Putar Lagu Kita</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Fungsi untuk membuka surat dan memunculkan konten
+        function openLetter() {
+            const envelope = document.getElementById('envelope');
+            const mainContent = document.getElementById('mainContent');
+            
+            envelope.classList.add('open');
+            
+            // Beri jeda sedikit agar animasi surat selesai baru konten muncul
+            setTimeout(() => {
+                envelope.style.display = 'none';
+                mainContent.classList.add('show');
+                startHearts(); // Jalankan efek hati bertebaran
+            }, 1200);
+        }
+
+        // Fungsi kontrol musik
+        const music = document.getElementById('bg-music');
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                document.querySelector('.music-btn').innerText = "⏸️ Jeda Lagu";
+            } else {
+                music.pause();
+                document.querySelector('.music-btn').innerText = "🎵 Putar Lagu Kita";
+            }
+        }
+
+        // Efek Hati Berjatuhan / Berterbangan
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 2 + 3 + 's'; // antara 3-5 detik
+                heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+                
+                document.body.appendChild(heart);
+                
+                // Hapus elemen setelah animasi selesai agar tidak membebani browser
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
